@@ -15,6 +15,7 @@ intents = discord.Intents.default()
 intents.messages = True
 intents.guilds = True
 intents.members = True
+intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
@@ -35,11 +36,25 @@ async def on_member_join(member):
         print("⚠️ Канал 'new-members' не знайдено. Перевірте назву каналу.")  # Відладка
 
 
+@bot.event
+async def on_ready():
+    print(f"Logged in as {bot.user}")
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} commands globally.")
+    except Exception as e:
+        print(e)
+
 # Команда: !ping
 @bot.command()
 async def ping(ctx):
     print(f"🏓 Отримано команду !ping від {ctx.author}")  # Відладка
-    await ctx.send("Понг! 🏓 Бот на зв'язку.")
+    await ctx.send("Понг! 🏓 Бот на зв'язку.") 
+
+@bot.tree.command(name="hello", description="Say hello to the bot!")
+async def hello(interaction: discord.Interaction):
+    """Slash command to respond in all chats."""
+    await interaction.response.send_message("Hello! This slash command works in all servers!")
 
 # Перевірка токену та запуск бота
 if TOKEN:
