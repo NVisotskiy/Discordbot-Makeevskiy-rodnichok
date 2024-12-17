@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import os
+import time
 
 # Завантажуємо токен із файлу .env
 load_dotenv("token.env")
@@ -25,12 +26,13 @@ async def on_member_join(member):
         f"Йо, {member.mention}! 🎉 Шо, заблукав чи чого сюди залетів? "
         f"Зазирни до каналу з правилами, щоб не наламати дров! 😉"
     )
-    general_channel = discord.utils.get(member.guild.text_channels, name="rules")
+    general_channel = discord.utils.get(member.guild.text_channels, name="new-members")
     if general_channel:
+        time.sleep(5) # Sleep for 5 seconds
         await general_channel.send(welcome_message)
         print(f"📨 Відправлено привітальне повідомлення для {member.name}")  # Відладка
     else:
-        print("⚠️ Канал 'rules' не знайдено. Перевірте назву каналу.")  # Відладка
+        print("⚠️ Канал 'new-members' не знайдено. Перевірте назву каналу.")  # Відладка
 
 
 # Команда: !ping
