@@ -57,6 +57,7 @@ async def hello(interaction: discord.Interaction):
     await interaction.response.send_message("Hello! This slash command works in all servers!")
 
 # Перевірка токену та запуск бота
+print(f"DEBUG: Token loaded is {TOKEN}")
 if TOKEN:
     print("🔑 Токен завантажено. Підключаємося до Discord...")
     bot.run(TOKEN)
