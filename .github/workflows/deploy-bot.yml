@@ -1,4 +1,4 @@
-name: Deploy Discord Bot
+name: Deploy Bot
 
 on:
   push:
@@ -8,21 +8,21 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.10'
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-
-    - name: Run Discord Bot
-      run: |
-        echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" > .env
-        python3 bot.py
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ec2-user@<your-ec2-ip-address> << 'EOF'
+          cd /home/ec2-user/Discordbot-Makeevskiy-rodnichok
+          git pull origin main
+          echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" > .env
+          pip3 install -r requirements.txt
+          sudo systemctl restart discordbot.service
+          EOF
