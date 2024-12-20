@@ -5,7 +5,7 @@ import os
 import time
 
 # Завантажуємо токен із файлу .env
-load_dotenv("token.env")
+load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 print("🚀 Запускаємо бота...")  # Відладочне повідомлення
