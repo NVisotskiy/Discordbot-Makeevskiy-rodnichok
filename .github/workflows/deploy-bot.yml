@@ -19,7 +19,7 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ec2-user@<13.48.43.181> << 'EOF'
+           ssh -o StrictHostKeyChecking=no ec2-user@<your-ec2-ip> << 'EOF'
           cd /home/ec2-user/Discordbot-Makeevskiy-rodnichok
           git pull origin main
           echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" > .env
